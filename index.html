@@ -2,307 +2,323 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<title>Politie Nieuwdam - MDT</title>
+<title>MDT – Politie Nieuwdam</title>
+
 <style>
-* { box-sizing:border-box; margin:0; padding:0; font-family:Arial,sans-serif; }
-body { background:#0e4f8a; color:white; padding:16px; height:100vh; }
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{margin:0;background:#0e4f8a;color:white;height:100vh;overflow:hidden}
 
-/* Topbar */
-.topbar { background:#0b3f73; border-radius:12px; height:60px; display:flex; align-items:center; justify-content:center; position:relative; font-size:26px; font-weight:bold; margin-bottom:16px; }
-.menu { position:absolute; right:20px; font-size:30px; cursor:pointer; }
-.dropdown { position:absolute; top:60px; right:20px; background:#0b3f73; border-radius:12px; display:none; flex-direction:column; width:220px; z-index:500; }
-.dropdown button { background:none; border:none; color:white; padding:12px 16px; text-align:left; cursor:pointer; font-size:16px; }
-.dropdown button:hover { background:#0b4a78; }
+/* TOPBAR */
+.topbar{
+    height:60px;
+    background:#0b3f73;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    font-weight:bold;
+    position:relative;
+}
+.menu{position:absolute;right:20px;cursor:pointer;font-size:28px}
 
-/* Layout */
-.container { display:grid; grid-template-columns:360px 1fr; grid-gap:16px; height:calc(100% - 76px); }
+/* LAYOUT */
+.container{
+    display:grid;
+    grid-template-columns:360px 1fr;
+    height:calc(100vh - 60px);
+    gap:12px;
+    padding:12px;
+}
 
-/* ===== ACTIEVE EENHEDEN ===== */
-.units-container { background-color: #0b3f73; border-radius: 24px; padding: 12px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
-.units-title { font-size:22px; font-weight:bold; margin-bottom:12px; text-align:center; letter-spacing:1px; }
+/* PANELS */
+.panel{
+    background:#0b3f73;
+    border-radius:20px;
+    padding:16px;
+    overflow-y:auto;
+}
+.panel h2{text-align:center;margin-bottom:12px}
 
-.unit-card { display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.2); cursor:grab; transition: transform 0.15s; }
-.unit-card:hover { transform: scale(1.02); }
+/* EENHEDEN */
+.unit-card{
+    display:flex;
+    align-items:center;
+    padding:12px;
+    border-radius:14px;
+    margin-bottom:10px;
+    background:#0b4a78;
+    box-shadow:0 4px 10px rgba(0,0,0,.3);
+    cursor:grab;
+}
+.unit-color{
+    width:6px;
+    height:100%;
+    border-radius:4px;
+    margin-right:10px;
+}
+.unit-info{flex:1}
+.unit-top{font-weight:bold;font-size:15px}
+.unit-bottom{font-size:13px;color:#cce6ff}
 
-.unit-info { display:flex; flex-direction:column; gap:4px; }
-.unit-top { display:flex; justify-content:space-between; align-items:center; font-weight:bold; }
-.unit-bottom { font-size:13px; color:#d6e9ff; }
+.status-dot{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    margin-right:10px;
+}
+.Beschikbaar{background:#2ecc71}
+.Bezet{background:#f39c12}
+.Pauze{background:#95a5a6}
 
-.unit-actions { display:flex; align-items:center; gap:8px; }
-.status-select { padding:3px 6px; font-size:13px; border-radius:6px; cursor:pointer; background: rgba(255,255,255,0.1); border:none; color:white; }
-.delete-btn { font-size:14px; padding:0 6px; background:none; border:none; color:#e74c3c; cursor:pointer; }
-.delete-btn:hover { color:#c0392b; }
-.unit-status-bol { width:12px; height:12px; border-radius:50%; }
+.unit-actions select{
+    background:#0e5ea3;
+    color:white;
+    border:none;
+    border-radius:6px;
+    padding:4px;
+    margin-right:6px;
+}
+.delete-unit{cursor:pointer;font-size:18px}
 
-/* Status kleuren */
-.Beschikbaar { background-color:#2ecc71; }
-.Bezet { background-color:#f39c12; }
-.Pauze { background-color:#e74c3c; }
+/* MELDINGEN */
+.melding{
+    border-radius:14px;
+    padding:12px;
+    margin-bottom:10px;
+    cursor:pointer;
+}
+.prio1{background:#e74c3c}
+.prio2{background:#f39c12}
+.prio3{background:#2ecc71}
 
-/* ===== MELDINGEN ===== */
-.main-panel { background:#0b3f73; border-radius:24px; display:flex; flex-direction:column; padding:20px; overflow-y:auto; }
-.main-panel h2 { text-align:center; margin-bottom:16px; }
-.meldingen-list { list-style:none; padding:0; display:grid; grid-template-columns:1fr; gap:12px; }
-.melding-item { padding:12px 16px; border-radius:12px; box-shadow:0 3px 8px rgba(0,0,0,0.2); cursor:pointer; min-height:60px; display:flex; justify-content:space-between; align-items:center; }
-/* Prio kleuren */
-.melding-item.prio1 { background:#e74c3c; } /* Rood */
-.melding-item.prio2 { background:#f39c12; } /* Oranje */
-.melding-item.prio3 { background:#2ecc71; } /* Groen */
-.melding-item .assigned-units { display:flex; gap:6px; flex-wrap:wrap; margin-left:10px; font-size:12px; }
-.melding-item .delete-melding { margin-left:10px; cursor:pointer; font-weight:bold; color:white; font-size:16px; }
-.melding-item .delete-melding:hover { color:#c0392b; }
+.melding small{opacity:.9}
 
-/* Fullscreen Modal */
-.modal-bg { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); display:none; justify-content:center; align-items:flex-start; z-index:1000; padding-top:30px; }
-.modal { background:#0b3f73; border-radius:12px; padding:20px; width:90%; max-width:800px; max-height:90%; display:flex; flex-direction:column; overflow-y:auto; position:relative; }
-.modal h3 { margin-bottom:16px; text-align:center; }
-.modal label { margin-top:8px; }
-.modal input, .modal select, .modal textarea { width:100%; padding:8px; margin-top:4px; border-radius:6px; border:none; outline:none; }
-.modal textarea { resize:none; height:150px; }
-.modal button { margin-top:16px; padding:10px; background:#2ecc71; border:none; border-radius:8px; font-weight:bold; cursor:pointer; color:white; }
-.modal button:hover { background:#27ae60; }
-.modal-close { position:absolute; top:10px; right:14px; font-size:22px; font-weight:bold; background:none; border:none; color:white; cursor:pointer; }
-.modal-close:hover { color:#c0392b; }
+/* MODALS */
+.modal{
+    position:fixed;
+    top:0;left:0;
+    width:100%;
+    height:100%;
+    background:#0b3f73;
+    z-index:999;
+    display:none;
+    padding:20px;
+}
+.modal h2{text-align:center}
+.close{position:absolute;top:20px;right:20px;font-size:28px;cursor:pointer}
+
+.modal label{margin-top:10px;display:block}
+.modal input,.modal select,.modal textarea{
+    width:100%;
+    padding:8px;
+    border:none;
+    border-radius:8px;
+    margin-top:4px;
+}
+.modal button{
+    width:100%;
+    margin-top:14px;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:#1abc9c;
+    font-size:16px;
+    cursor:pointer;
+}
 </style>
 </head>
+
 <body>
 
 <div class="topbar">
-    POLITIE NIEUWDAM
-    <div class="menu">☰</div>
-    <div class="dropdown" id="dropdownMenu">
-        <button onclick="openUnitModal()">Eenheid toevoegen</button>
-        <button onclick="openMeldingModal()">Melding aanmaken</button>
-    </div>
+    POLITIE NIEUWDAM MDT
+    <div class="menu" onclick="toggleMenu()">☰</div>
 </div>
 
 <div class="container">
-    <!-- Units -->
-    <div class="units-container">
-        <div class="units-title">ACTIEVE EENHEDEN</div>
-        <div id="unitsList"></div>
+
+    <!-- EENHEDEN -->
+    <div class="panel">
+        <h2>Actieve Eenheden</h2>
+        <button onclick="openUnitModal()">+ Eenheid</button>
+        <div id="units"></div>
     </div>
-    <!-- Meldingen -->
-    <div class="main-panel">
+
+    <!-- MELDINGEN -->
+    <div class="panel">
         <h2>Actieve Meldingen</h2>
-        <ul id="meldingenList" class="meldingen-list"></ul>
+        <button onclick="openMeldingModal()">+ Melding</button>
+        <div id="meldingen"></div>
     </div>
+
 </div>
 
-<!-- Modals -->
-<div class="modal-bg" id="unitModal">
-    <div class="modal">
-        <h3>Eenheid toevoegen</h3>
-        <label>Roepnummer</label><input type="text" id="unitRoepnummer">
-        <label>Rang</label>
-        <select id="unitRangSelect"></select>
-        <label>Naam</label><input type="text" id="unitNaam">
-        <label>Functie</label>
-        <select id="unitFunctieSelect"></select>
-        <label>Status</label>
-        <select id="unitStatus">
-            <option value="Beschikbaar">Beschikbaar</option>
-            <option value="Bezet">Bezet</option>
-            <option value="Pauze">Pauze</option>
-        </select>
-        <button onclick="saveUnit()">Toevoegen</button>
-        <button class="modal-close" onclick="closeUnitModal()">✖</button>
-    </div>
+<!-- EENHEID MODAL -->
+<div class="modal" id="unitModal">
+    <div class="close" onclick="closeUnitModal()">✖</div>
+    <h2>Eenheid aanmaken</h2>
+
+    <label>Roepnummer</label>
+    <input id="uRoep">
+
+    <label>Naam</label>
+    <input id="uNaam">
+
+    <label>Rang</label>
+    <select id="uRang"></select>
+
+    <label>Functie</label>
+    <select id="uFunctie"></select>
+
+    <button onclick="saveUnit()">Opslaan</button>
 </div>
 
-<div class="modal-bg" id="meldingModal">
-    <div class="modal">
-        <h3>Melding aanmaken</h3>
-        <label>Locatie</label><input type="text" id="meldingLocatie">
-        <label>Wat er gebeurt</label><input type="text" id="meldingOmschrijving">
-        <label>Prioriteit</label>
-        <select id="meldingPrioriteit">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </select>
-        <button onclick="saveMelding()">Toevoegen</button>
-        <button class="modal-close" onclick="closeMeldingModal()">✖</button>
-    </div>
-</div>
+<!-- MELDING MODAL -->
+<div class="modal" id="meldingModal">
+    <div class="close" onclick="closeMeldingModal()">✖</div>
+    <h2>Melding aanmaken</h2>
 
-<div class="modal-bg" id="editMeldingModal">
-    <div class="modal">
-        <h3>Melding bewerken</h3>
-        <label>Locatie</label><input type="text" id="editLocatie">
-        <label>Omschrijving</label><input type="text" id="editOmschrijving">
-        <label>Prioriteit</label><select id="editPrioriteit">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </select>
-        <label>Notities</label><textarea id="editNotities"></textarea>
-        <label>Toegewezen eenheden</label>
-        <div id="assignedUnits" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
-        <button onclick="saveEditMelding()">Opslaan</button>
-        <button class="modal-close" onclick="closeEditMeldingModal()">✖</button>
-    </div>
+    <label>Prioriteit</label>
+    <select id="mPrio">
+        <option value="1">Prio 1</option>
+        <option value="2">Prio 2</option>
+        <option value="3">Prio 3</option>
+    </select>
+
+    <label>Locatie</label>
+    <input id="mLoc">
+
+    <label>Omschrijving</label>
+    <input id="mOms">
+
+    <label>Portokanaal</label>
+    <input id="mPorto">
+
+    <label>Notities</label>
+    <textarea id="mNote"></textarea>
+
+    <button onclick="saveMelding()">Opslaan</button>
 </div>
 
 <script>
-// Configuratie voor rangen en functies
-const rangOpties = ["Eerste Hoofd-Commisaris","Hoofd-commisaris","Commisaris","Hoofd-Inspecteur","Inspecteur","Brigadier", "Hoofd-agent", "agent", "surveillant", "Aspirant"];
-const functieOpties = [
-    { naam: "NoodHulp", kleur: "#0b4a78" },
-    { naam: "Verkeer", kleur: "#1abc9c" },
-    { naam: "OVD-P", kleur: "#006611" },
-    { naam: "Offroad", kleur: "#8e44ad" },
-    { naam: "ZULU", kleur: "#414f5b" },
-    { naam: "TMO", kleur: "#d35400" },
-];
+/* CONFIG – makkelijk uitbreidbaar */
+const RANGEN=["Surveillant","Agent","Hoofdagent","Brigadier","Inspecteur"];
+const FUNCTIES={
+    "Surveillance":"#3498db",
+    "Verkeer":"#9b59b6",
+    "OVD":"#e67e22",
+    "Recherche":"#16a085"
+};
 
-let units = [];
-let meldingen = [];
+/* STORAGE */
+let units=JSON.parse(localStorage.getItem("units"))||[];
+let meldingen=JSON.parse(localStorage.getItem("meldingen"))||[];
 
-// Dropdown toggle
-document.querySelector(".menu").addEventListener("click",()=>{
-    const dropdown = document.getElementById("dropdownMenu");
-    dropdown.style.display = dropdown.style.display==='flex'?'none':'flex';
-});
+/* INIT */
+const uRang=document.getElementById("uRang");
+const uFunctie=document.getElementById("uFunctie");
+RANGEN.forEach(r=>uRang.innerHTML+=`<option>${r}</option>`);
+Object.keys(FUNCTIES).forEach(f=>uFunctie.innerHTML+=`<option>${f}</option>`);
 
-// Populate rang & functie selects
-const rangSelect = document.getElementById("unitRangSelect");
-rangOpties.forEach(r=>{ const o=document.createElement("option"); o.value=r; o.textContent=r; rangSelect.appendChild(o); });
-const functieSelect = document.getElementById("unitFunctieSelect");
-functieOpties.forEach(f=>{ const o=document.createElement("option"); o.value=f.naam; o.textContent=f.naam; functieSelect.appendChild(o); });
+function saveData(){
+    localStorage.setItem("units",JSON.stringify(units));
+    localStorage.setItem("meldingen",JSON.stringify(meldingen));
+}
 
-// Render units
+/* EENHEDEN */
 function renderUnits(){
-    const container=document.getElementById("unitsList");
-    container.innerHTML="";
+    const el=document.getElementById("units");
+    el.innerHTML="";
     units.forEach((u,i)=>{
-        const div=document.createElement("div");
-        div.className="unit-card";
-        div.style.background = (functieOpties.find(f=>f.naam===u.functie)||{}).kleur || "#0b4a78";
-        div.draggable=true;
-        div.ondragstart=e=>{ e.dataTransfer.setData("text/plain",i); };
-        div.innerHTML=`
+        el.innerHTML+=`
+        <div class="unit-card" draggable="true" ondragstart="dragUnit(${i})">
+            <div class="unit-color" style="background:${FUNCTIES[u.functie]}"></div>
+            <div class="status-dot ${u.status}"></div>
             <div class="unit-info">
-                <div class="unit-top">
-                    <span>${u.roepnummer} <span class="rang">${u.rang}</span></span>
-                </div>
+                <div class="unit-top">${u.roep} – ${u.rang}</div>
                 <div class="unit-bottom">${u.naam} · ${u.functie}</div>
             </div>
             <div class="unit-actions">
-                <span class="unit-status-bol ${u.status}"></span>
-                <select class="status-select" onchange="updateUnitStatus(${i},this.value)">
-                    <option value="Beschikbaar" ${u.status==='Beschikbaar'?'selected':''}>Beschikbaar</option>
-                    <option value="Bezet" ${u.status==='Bezet'?'selected':''}>Bezet</option>
-                    <option value="Pauze" ${u.status==='Pauze'?'selected':''}>Pauze</option>
+                <select onchange="setStatus(${i},this.value)">
+                    <option ${u.status=="Beschikbaar"?"selected":""}>Beschikbaar</option>
+                    <option ${u.status=="Bezet"?"selected":""}>Bezet</option>
+                    <option ${u.status=="Pauze"?"selected":""}>Pauze</option>
                 </select>
-                <button class="delete-btn" onclick="deleteUnit(${i})">✖</button>
+                <span class="delete-unit" onclick="delUnit(${i})">✖</span>
             </div>
-        `;
-        container.appendChild(div);
+        </div>`;
     });
+    saveData();
 }
 
-// Units actions
 function saveUnit(){
-    const r = document.getElementById("unitRoepnummer").value;
-    const rg = document.getElementById("unitRangSelect").value;
-    const n = document.getElementById("unitNaam").value;
-    const f = document.getElementById("unitFunctieSelect").value;
-    const s = document.getElementById("unitStatus").value;
-    if(!r||!rg||!n||!f) return alert("Vul alle velden in!");
-    units.push({ roepnummer:r, rang:rg, naam:n, functie:f, status:s });
-    renderUnits();
-    closeUnitModal();
-}
-function updateUnitStatus(i,v){ units[i].status=v; renderUnits(); }
-function deleteUnit(i){ if(confirm("Weet je het zeker?")){ units.splice(i,1); renderUnits(); renderMeldingen(); } }
-
-// Meldingen render & actions
-function renderMeldingen(){
-    const list=document.getElementById("meldingenList");
-    list.innerHTML="";
-    meldingen.forEach((m,i)=>{
-        const li=document.createElement("li");
-        li.className=`melding-item prio${m.prioriteit}`;
-        li.innerHTML=`
-            <span>${i+1}. Locatie: ${m.locatie} | ${m.omschrijving}</span>
-            <div class="assigned-units">${(m.units||[]).map(u=>u.roepnummer).join(", ")}</div>
-            <span class="delete-melding" onclick="deleteMelding(${i})">✖</span>
-        `;
-        li.ondrop=e=>{
-            e.preventDefault();
-            const unitIndex=parseInt(e.dataTransfer.getData("text/plain"));
-            if(!m.units) m.units=[];
-            if(!m.units.includes(units[unitIndex])) m.units.push(units[unitIndex]);
-            units[unitIndex].status="Bezet";
-            renderUnits();
-            renderMeldingen();
-        };
-        li.ondragover=e=>e.preventDefault();
-        li.onclick=()=>openEditMelding(i);
-        list.appendChild(li);
+    units.push({
+        roep:uRoep.value,
+        naam:uNaam.value,
+        rang:uRang.value,
+        functie:uFunctie.value,
+        status:"Beschikbaar"
     });
+    closeUnitModal();
+    renderUnits();
+}
+
+function setStatus(i,s){units[i].status=s;renderUnits();}
+function delUnit(i){units.splice(i,1);renderUnits();}
+
+/* MELDINGEN */
+function renderMeldingen(){
+    const el=document.getElementById("meldingen");
+    el.innerHTML="";
+    meldingen.forEach((m,i)=>{
+        el.innerHTML+=`
+        <div class="melding prio${m.prio}" ondragover="event.preventDefault()" ondrop="dropUnit(${i})" onclick="openEdit(${i})">
+            <strong>Prio ${m.prio}</strong><br>
+            ${m.loc}<br>
+            <small>${m.omschrijving}</small><br>
+            <small>Porto: ${m.porto||"-"}</small><br>
+            <small>Eenheden: ${(m.units||[]).join(", ")}</small>
+        </div>`;
+    });
+    saveData();
 }
 
 function saveMelding(){
-    const loc=document.getElementById("meldingLocatie").value;
-    const oms=document.getElementById("meldingOmschrijving").value;
-    const prio=parseInt(document.getElementById("meldingPrioriteit").value);
-    if(!loc||!oms||!prio) return alert("Vul alles in!");
-    meldingen.push({locatie:loc, omschrijving:oms, prioriteit:prio, notities:"", units:[]});
-    renderMeldingen();
+    meldingen.push({
+        prio:mPrio.value,
+        loc:mLoc.value,
+        omschrijving:mOms.value,
+        porto:mPorto.value,
+        note:mNote.value,
+        units:[]
+    });
     closeMeldingModal();
-}
-function deleteMelding(i){
-    if(confirm("Weet je zeker dat deze melding is afgehandeld?")){
-        const m = meldingen[i];
-        if(m.units){
-            m.units.forEach(u=>{
-                const unit = units.find(x=>x.roepnummer===u.roepnummer);
-                if(unit) unit.status="Beschikbaar";
-            });
-        }
-        meldingen.splice(i,1);
-        renderUnits();
-        renderMeldingen();
-    }
-}
-
-// Edit melding
-let currentEdit=null;
-function openEditMelding(i){
-    currentEdit=i;
-    const m=meldingen[i];
-    document.getElementById("editLocatie").value=m.locatie;
-    document.getElementById("editOmschrijving").value=m.omschrijving;
-    document.getElementById("editPrioriteit").value=m.prioriteit;
-    document.getElementById("editNotities").value=m.notities;
-    const assigned=document.getElementById("assignedUnits");
-    assigned.innerHTML="";
-    m.units.forEach(u=>{ const s=document.createElement("span"); s.textContent=u.roepnummer; assigned.appendChild(s); });
-    document.getElementById("editMeldingModal").style.display="flex";
-}
-function saveEditMelding(){
-    if(currentEdit===null) return;
-    const m=meldingen[currentEdit];
-    m.locatie=document.getElementById("editLocatie").value;
-    m.omschrijving=document.getElementById("editOmschrijving").value;
-    m.prioriteit=parseInt(document.getElementById("editPrioriteit").value);
-    m.notities=document.getElementById("editNotities").value;
     renderMeldingen();
-    closeEditMeldingModal();
 }
 
-// Modals open/close
-function openUnitModal(){ document.getElementById("unitModal").style.display="flex"; document.getElementById("dropdownMenu").style.display="none"; }
-function closeUnitModal(){ document.getElementById("unitModal").style.display="none"; }
-function openMeldingModal(){ document.getElementById("meldingModal").style.display="flex"; document.getElementById("dropdownMenu").style.display="none"; }
-function closeMeldingModal(){ document.getElementById("meldingModal").style.display="none"; }
-function closeEditMeldingModal(){ document.getElementById("editMeldingModal").style.display="none"; }
+function dropUnit(mi){
+    const ui=dragged;
+    if(!meldingen[mi].units.includes(units[ui].roep)){
+        meldingen[mi].units.push(units[ui].roep);
+        units[ui].status="Bezet";
+    }
+    renderUnits();renderMeldingen();
+}
 
-// Initial render
+/* DRAG */
+let dragged=null;
+function dragUnit(i){dragged=i}
+
+/* MODALS */
+function openUnitModal(){unitModal.style.display="block"}
+function closeUnitModal(){unitModal.style.display="none"}
+function openMeldingModal(){meldingModal.style.display="block"}
+function closeMeldingModal(){meldingModal.style.display="none"}
+
+/* START */
 renderUnits();
 renderMeldingen();
 </script>
+
 </body>
 </html>
